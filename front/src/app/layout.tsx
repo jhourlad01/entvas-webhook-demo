@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Real-Time Analytics Dashboard",
-  description: "Senior Full Stack Developer Technical Assessment - Real-time analytics dashboard with webhook integration",
+  title: "Events Analytics Dashboard",
+  description: "Senior Full Stack Developer Technical Assessment - Events analytics dashboard with webhook integration",
 };
 
 export default function RootLayout({
@@ -36,10 +36,11 @@ export default function RootLayout({
       >
         <Header />
         <main style={{ flexGrow: 1, padding: '24px 16px' }}>
-          {children}
+          {children} 
         </main>
         <Footer />
       </body>
     </html>
   );
 }
+

@@ -43,7 +43,17 @@ export default function EventsPerMinuteChart({
   const chartData = {
     labels: data.map(item => {
       const date = new Date(item.timestamp);
-      return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+      // Show different formats based on data range
+      if (data.length <= 60) {
+        // For 1 hour view - show minutes
+        return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+      } else if (data.length <= 24) {
+        // For 24 hour view - show hours
+        return `${date.getHours()}:00`;
+      } else {
+        // For 7 day view - show days
+        return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      }
     }),
     datasets: [
       {

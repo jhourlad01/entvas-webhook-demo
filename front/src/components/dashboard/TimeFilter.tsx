@@ -23,35 +23,38 @@ export default function TimeFilter({
   ];
 
   return (
-    <Card sx={{ height: '100%', minHeight: 120 }}>
+    <Card sx={{ height: '100%', minHeight: 80 }}>
       <CardContent>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <AccessTime sx={{ mr: 1, color: 'primary.main' }} />
-          <Typography variant="h6" component="h3" sx={{ fontWeight: 600 }}>
-            {title}
-          </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
+          {/* Label and Icon */}
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <AccessTime sx={{ mr: 1, color: 'primary.main' }} />
+            <Typography variant="h6" component="h3" sx={{ fontWeight: 600 }}>
+              {title}
+            </Typography>
+          </Box>
+          
+          {/* Buttons */}
+          <ButtonGroup 
+            variant="outlined" 
+            size="large"
+          >
+            {timeRanges.map((range) => (
+              <Button
+                key={range.value}
+                onClick={() => onRangeChange(range.value)}
+                variant={selectedRange === range.value ? 'contained' : 'outlined'}
+                sx={{ 
+                  textTransform: 'none',
+                  fontWeight: selectedRange === range.value ? 600 : 400,
+                  minWidth: 100
+                }}
+              >
+                {range.label}
+              </Button>
+            ))}
+          </ButtonGroup>
         </Box>
-        
-        <ButtonGroup 
-          variant="outlined" 
-          size="large"
-          sx={{ width: '100%' }}
-        >
-          {timeRanges.map((range) => (
-            <Button
-              key={range.value}
-              onClick={() => onRangeChange(range.value)}
-              variant={selectedRange === range.value ? 'contained' : 'outlined'}
-              sx={{ 
-                flex: 1,
-                textTransform: 'none',
-                fontWeight: selectedRange === range.value ? 600 : 400
-              }}
-            >
-              {range.label}
-            </Button>
-          ))}
-        </ButtonGroup>
       </CardContent>
     </Card>
   );

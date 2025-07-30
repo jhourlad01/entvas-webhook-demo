@@ -27,13 +27,13 @@ export default function Footer() {
           }}
         >
           <Typography variant="body2" color="text.secondary">
-            © 2024 Real-Time Analytics Dashboard. Built for Senior Full Stack Developer Assessment.
+            © 2024 Joe Estrella. Built for Senior Full Stack Developer Assessment.
           </Typography>
           
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-            <Typography variant="body2" color="text.secondary">
-              Technologies: Next.js, Express.js, PostgreSQL, Socket.IO
-            </Typography>
+            <MuiLink href="mailto:jhourlad01@gmail.com" color="inherit" sx={{ display: 'flex', alignItems: 'center' }}>
+              jhourlad01@gmail.com
+            </MuiLink>
             <Box sx={{ display: 'flex', gap: 1 }}>
               <MuiLink href="#" color="inherit" sx={{ display: 'flex', alignItems: 'center' }}>
                 <GitHub fontSize="small" />

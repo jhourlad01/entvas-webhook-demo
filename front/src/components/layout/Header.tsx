@@ -11,10 +11,11 @@ export default function Header() {
         <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
           <Analytics sx={{ mr: 2 }} />
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Real-Time Analytics Dashboard
+            Events Analytics Dashboard
           </Typography>
         </Box>
         
+        {/* Menu links commented out
         <Box sx={{ display: 'flex', gap: 2 }}>
           <Button 
             color="inherit" 
@@ -33,6 +34,7 @@ export default function Header() {
             Dashboard
           </Button>
         </Box>
+        */}
       </Toolbar>
     </AppBar>
   );
