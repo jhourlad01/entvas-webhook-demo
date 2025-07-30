@@ -1,8 +1,7 @@
 'use client';
 
-import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
-import { Analytics, Home } from '@mui/icons-material';
-import Link from 'next/link';
+import { AppBar, Toolbar, Typography, Box } from '@mui/material';
+import { Analytics } from '@mui/icons-material';
 
 export default function Header() {
   return (

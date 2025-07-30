@@ -66,7 +66,7 @@ const generateTopEventTypes = (timeRange: TimeRange) => {
   
   const total = Math.floor(Math.random() * (baseTotal * 0.3)) + baseTotal;
   
-  return types.map((type, index) => {
+  return types.map((type) => {
     const count = Math.floor(Math.random() * (total * 0.4)) + 50;
     return {
       type,

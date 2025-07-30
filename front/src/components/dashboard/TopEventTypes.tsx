@@ -34,7 +34,7 @@ export default function TopEventTypes({
   data, 
   title = "Top 5 Event Types" 
 }: TopEventTypesProps) {
-  const chartRef = useRef<any>(null);
+  const chartRef = useRef<ChartJS<'pie'> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [chartDimensions, setChartDimensions] = useState({ width: 300, height: 300 });
 
