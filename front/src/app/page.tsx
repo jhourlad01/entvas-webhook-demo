@@ -1,103 +1,143 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useEffect } from 'react';
+import { Container, Typography, Box } from '@mui/material';
+import { Analytics, Timeline, TrendingUp } from '@mui/icons-material';
+import StatsCard from '@/components/dashboard/StatsCard';
+import EventsPerMinuteChart from '@/components/dashboard/EventsPerMinuteChart';
+import TopEventTypes from '@/components/dashboard/TopEventTypes';
+import TimeFilter, { TimeRange } from '@/components/dashboard/TimeFilter';
+
+// Generate live data for demonstration
+const generateLiveData = () => {
+  const now = new Date();
+  const data = [];
+  
+  for (let i = 10; i >= 0; i--) {
+    const time = new Date(now.getTime() - i * 60000); // Each minute
+    data.push({
+      timestamp: time.toISOString(),
+      count: Math.floor(Math.random() * 50) + 10, // Random count between 10-60
+    });
+  }
+  
+  return data;
+};
+
+const generateTopEventTypes = () => {
+  const types = ['page_view', 'button_click', 'form_submit', 'api_call', 'error_log'];
+  const total = Math.floor(Math.random() * 1000) + 2000;
+  
+  return types.map((type, index) => {
+    const count = Math.floor(Math.random() * (total * 0.4)) + 50;
+    return {
+      type,
+      count,
+      percentage: (count / total) * 100,
+    };
+  }).sort((a, b) => b.count - a.count).slice(0, 5);
+};
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('24h');
+  const [totalEvents, setTotalEvents] = useState(2770);
+  const [eventsThisMinute, setEventsThisMinute] = useState(23);
+  const [activeUsers, setActiveUsers] = useState(156);
+  const [successRate, setSuccessRate] = useState(98.5);
+  const [chartData, setChartData] = useState(generateLiveData());
+  const [topEventTypes, setTopEventTypes] = useState(generateTopEventTypes());
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+  // Simulate real-time updates
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Update stats
+      setEventsThisMinute(prev => prev + Math.floor(Math.random() * 5));
+      setTotalEvents(prev => prev + Math.floor(Math.random() * 10));
+      setActiveUsers(prev => prev + Math.floor(Math.random() * 10) - 5);
+      setSuccessRate(prev => Math.max(95, Math.min(100, prev + (Math.random() - 0.5) * 2)));
+      
+      // Update chart data
+      setChartData(prev => {
+        const newData = [...prev.slice(1)]; // Remove oldest point
+        const now = new Date();
+        newData.push({
+          timestamp: now.toISOString(),
+          count: Math.floor(Math.random() * 50) + 10,
+        });
+        return newData;
+      });
+      
+      // Update top event types
+      setTopEventTypes(generateTopEventTypes());
+    }, 3000); // Update every 3 seconds for more live feel
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <Container maxWidth="xl">
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
+          Real-Time Analytics Dashboard
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Monitor live events and analytics with real-time updates
+        </Typography>
+      </Box>
+
+      {/* Time Filter */}
+      <Box sx={{ display: 'flex', gap: 3, mb: 3 }}>
+        <Box sx={{ flex: 1, maxWidth: 400 }}>
+          <TimeFilter
+            selectedRange={selectedTimeRange}
+            onRangeChange={setSelectedTimeRange}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        </Box>
+      </Box>
+
+      {/* Stats Cards */}
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 3, mb: 4 }}>
+        <StatsCard
+          title="Total Events"
+          value={totalEvents}
+          subtitle="All time events"
+          trend="up"
+          trendValue="+12% from last hour"
+          icon={<Analytics />}
+        />
+        <StatsCard
+          title="Events This Minute"
+          value={eventsThisMinute}
+          subtitle="Live count"
+          trend="up"
+          trendValue="+3 from last minute"
+          icon={<Timeline />}
+        />
+        <StatsCard
+          title="Active Users"
+          value={activeUsers}
+          subtitle="Currently online"
+          trend="neutral"
+          icon={<TrendingUp />}
+        />
+        <StatsCard
+          title="Success Rate"
+          value={`${successRate.toFixed(1)}%`}
+          subtitle="API calls"
+          trend="up"
+          trendValue="+0.2% from yesterday"
+          icon={<TrendingUp />}
+        />
+      </Box>
+
+      {/* Charts and Analytics */}
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '2fr 1fr' }, gap: 3 }}>
+        <EventsPerMinuteChart 
+          data={chartData}
+          title={`Events per Minute (${selectedTimeRange === '1h' ? 'Last Hour' : selectedTimeRange === '24h' ? 'Last Day' : 'Last Week'})`}
+        />
+        <TopEventTypes data={topEventTypes} />
+      </Box>
+    </Container>
   );
 }
